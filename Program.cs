@@ -23,6 +23,7 @@ static class Program
         breakTimer = new Timer();
         breakTimer.Tick += breakTimer_Tick;
         breakTimer.Interval = SettingsData.Default.GetBreakInterval();
+        breakTimer.Start();
 
         // Setup context menu
         var settingsItem = new ToolStripMenuItem("Settings");
@@ -41,14 +42,15 @@ static class Program
         trayIcon.ContextMenuStrip = contextMenu;
         trayIcon.Visible = true;
 
-        blackScreen = new BlackScreenForm();
-        blackScreen.FormClosed += BlackScreen_FormClosed;
         Application.Run();
     }
 
     private static void breakTimer_Tick(object sender, EventArgs e)
     {
         breakTimer.Stop();
+
+        blackScreen = new BlackScreenForm();
+        blackScreen.FormClosed += BlackScreen_FormClosed;
         blackScreen.ShowForDuration(SettingsData.Default.BreakMinuts);
     }
 
