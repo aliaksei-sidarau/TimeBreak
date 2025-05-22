@@ -13,7 +13,7 @@ public class SettingsData
 
     public int BreakMinuts { get; private set; }
 
-    public int GetBreakInterval() =>
-        HoursInterval.HoursToInterval() -
-        BreakMinuts.MinutesToInterval();
+    public TimeSpan GetTimeToBreak() => TimeSpan.FromHours(HoursInterval) - TimeSpan.FromMinutes(BreakMinuts);
+    
+    public int GetBreakInterval() => GetTimeToBreak().ToInterval();
 }

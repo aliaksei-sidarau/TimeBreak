@@ -7,9 +7,6 @@ public static class TimeExtensions
     public static int MinutesToSeconds(this int minutes) =>
         Convert.ToInt32(TimeSpan.FromMinutes(minutes).TotalSeconds);
 
-    public static int MinutesToInterval(this int minutes) =>
-        Convert.ToInt32(TimeSpan.FromMinutes(minutes).TotalMilliseconds);
-
-    public static int HoursToInterval(this int hours) =>
-        Convert.ToInt32(TimeSpan.FromHours(hours).TotalMilliseconds);
+    public static int ToInterval(this TimeSpan time) =>
+        Convert.ToInt32(time.TotalMilliseconds);
 }

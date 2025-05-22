@@ -32,8 +32,13 @@ static class Program
         var timeItem = new ToolStripMenuItem();
         timeItem.Enabled = false;
 
+        var breakNowItem = new ToolStripMenuItem("Break Now");
+        breakNowItem.Click += (object sender, EventArgs e) =>
+            StopTimerAndShowBlackScreen(SettingsData.Default.BreakMinuts);
+
         var settingsItem = new ToolStripMenuItem("Settings");
-        settingsItem.Click += (object sender, EventArgs e) => StopTimerAndShowBlackScreen(1);
+        settingsItem.Click += (object sender, EventArgs e) =>
+            MessageBox.Show("Not implemented!");
 
         var exitItem = new ToolStripMenuItem("Exit");
         exitItem.Click += (object sender, EventArgs e) =>
@@ -47,11 +52,16 @@ static class Program
         
         var contextMenu = new ContextMenuStrip();
         contextMenu.Items.Add(timeItem);
+        contextMenu.Items.Add(breakNowItem);
         contextMenu.Items.Add(settingsItem);
         contextMenu.Items.Add(exitItem);
         contextMenu.Opening += (sender, e) =>
         {
-            timeItem.Text = $"Last: {lastStart.ToString("HH:mm:ss")}";
+            var remain = SettingsData.Default.GetTimeToBreak().Add(lastStart - DateTime.Now);
+            if (remain < TimeSpan.Zero) remain = TimeSpan.Zero;
+
+            var remainString = string.Format("{0}:{1}:{2}", remain.Hours, remain.Minutes, remain.Seconds);
+            timeItem.Text = $"Break in ({remainString})";
         };
 
         // Setup tray icon
